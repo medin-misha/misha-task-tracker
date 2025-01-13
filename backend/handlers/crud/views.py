@@ -96,7 +96,31 @@ async def create_model_view(
 
     return await create(session=session, model=models.get(model_name), data=data)
 
-#сделать метод patch
+
+@router.patch("/{model:str}/{id:int}")
+async def patch_model_view(
+    model_name: str,
+    id: int,
+    data: dict,
+    session: AsyncSession = Depends(db_helper.session),
+):
+    if not model_name in models.keys():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=settings.errors.defunct_model
+        )
+    UpdateModel = create_model(
+        "UpdateModel", **{key: (type(value), ...) for key, value in data.items()}
+    )
+    model: typing.Optional[Base] = await update(
+        session=session, id=id, data=UpdateModel(**data), model=models.get(model_name)
+    )
+    if model:
+        return model
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail=settings.errors.not_fount_by_id.format(model=model_name, id=id),
+    )
+
 
 @router.delete("/{model:str}/{id:int}", status_code=204)
 async def delete_model_view(

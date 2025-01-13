@@ -41,7 +41,7 @@ async def update(
     essence: ModelType = await session.get(model, ident=id)
     if essence is None:
         return None
-    for name, value in data.model_dump().items():
+    for name, value in data.model_dump(exclude_unset=True).items():
         setattr(essence, name, value)
     await session.commit()
     return essence
