@@ -9,8 +9,8 @@ class DBHelper:
             bind=self.engine, autoflush=False, autocommit=False, expire_on_commit=False
         )
 
-    def session(self) -> AsyncSession:
-        async with self.session_factory() as session:
+    async def session(self) -> AsyncSession:
+        async with self.session_maker() as session:
             yield session
             await session.close()
 
