@@ -13,7 +13,8 @@ class ErrorsMassages(BaseModel):
         "Эта модель не существует. Попробуйте одну из этих: user, task, replay"
     )
     not_fount_by_id: str = "{model} не был найден по id = {id}"
-
+    auth_error: str = "плохое имя или chat_id"
+    registration_error: str = "У вас не может быть такого chat_id."
 
 class Settings(BaseSettings):
     db: DBSettings = DBSettings()
