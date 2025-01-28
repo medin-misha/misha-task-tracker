@@ -12,7 +12,7 @@ security = HTTPBasic()
 async def login(
     credentials: Annotated[HTTPBasicCredentials, Depends(security)],
     session: AsyncSession = Depends(db_helper.session)
-) -> None:
+) -> User:
     """
     Функция авторизации пользователя.
 
@@ -33,7 +33,7 @@ async def login(
     if secrets.compare_digest(
         user.chat_id.encode("utf-8"), credentials.password.encode("utf-8")
     ):
-        return
+        return user
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED, detail=settings.errors.auth_error
     )
