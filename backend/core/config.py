@@ -1,11 +1,20 @@
 from pydantic import BaseModel
 from pydantic_settings import BaseSettings
+from pathlib import Path
+import os
+
+BASE_DIR = Path(__file__).parent.parent
 
 
 class DBSettings(BaseModel):
     url: str = (
-        "postgresql+asyncpg://postgres_user:postgres_password@localhost/postgres_db"
+        f"postgresql+asyncpg://{os.getenv('postgres_user')}:{os.getenv('postgres_password')}@{os.getenv('postgres_host')}"
     )
+
+
+class SecuredSettings(BaseSettings):
+    public_key: Path = BASE_DIR / "keys/public.pem"
+    private_key: Path = BASE_DIR / "keys/private.pem"
 
 
 class ErrorsMassages(BaseModel):
@@ -16,9 +25,13 @@ class ErrorsMassages(BaseModel):
     auth_error: str = "плохое имя или chat_id"
     registration_error: str = "У вас не может быть такого chat_id."
 
+
 class Settings(BaseSettings):
     db: DBSettings = DBSettings()
     errors: ErrorsMassages = ErrorsMassages()
+    secured: SecuredSettings = SecuredSettings()
 
 
 settings: Settings = Settings()
+
+
