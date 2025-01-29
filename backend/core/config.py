@@ -15,6 +15,7 @@ class DBSettings(BaseModel):
 class SecuredSettings(BaseSettings):
     public_key: Path = BASE_DIR / "keys/public.pem"
     private_key: Path = BASE_DIR / "keys/private.pem"
+    algrorithm: str = "RS256"
 
 
 class ErrorsMassages(BaseModel):
@@ -33,5 +34,3 @@ class Settings(BaseSettings):
 
 
 settings: Settings = Settings()
-
-
