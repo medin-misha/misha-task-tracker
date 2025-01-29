@@ -44,6 +44,8 @@ async def registration_view(
     В случае конфликта, например, если пользователь с такими данными уже существует,
     возвращается ошибка 400 с соответствующим сообщением.
     """
+    hashed_chat_id: bytes = auth.hash_password(password=user.chat_id)
+    user.chat_id = hashed_chat_id.decode()
     user_model = User(**user.model_dump())
     session.add(user_model)
     try:
