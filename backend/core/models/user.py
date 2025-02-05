@@ -5,7 +5,7 @@ from .base import Base
 
 class User(Base):
     user_name: Mapped[str]
-    chat_id: Mapped[str] = mapped_column(unique=True)
+    chat_id: Mapped[bytes] = mapped_column(unique=True)
     tasks: Mapped[List["Task"]] = relationship(
-        back_populates="user", uselist=True, lazy="selectin"
+        back_populates="user", uselist=True
     )
