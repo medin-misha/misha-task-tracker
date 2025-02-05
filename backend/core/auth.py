@@ -6,7 +6,7 @@ import bcrypt
 from typing import Annotated
 import secrets
 from core.models import User
-from core import db_helper
+from core import db_helper, settings
 
 
 security = HTTPBasic()
@@ -41,7 +41,7 @@ async def login(
     user: User = stmt_result.scalar()
 
     if validate_password(
-        password=credentials.password, hashed_password=user.chat_id.encode()
+        password=credentials.password, hashed_password=user.chat_id
     ):
         return user
     raise HTTPException(

@@ -1,4 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.exc import IntegrityError
+from fastapi import HTTPException, status
 from sqlalchemy import Result, select
 from sqlalchemy.orm import selectinload
 from pydantic import BaseModel
@@ -27,7 +29,10 @@ async def get_by_id(
 async def create(session: AsyncSession, model: ModelType, data: BaseModel) -> ModelType:
     model: ModelType = model(**data.model_dump())
     session.add(model)
-    await session.commit()
+    try:
+        await session.commit()
+    except IntegrityError:
+        raise HTTPException(status_code=status.HTTP_422)
     await session.refresh(model)
     return model
 
