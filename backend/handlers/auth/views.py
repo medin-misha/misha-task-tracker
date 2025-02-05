@@ -45,7 +45,7 @@ async def registration_view(
     возвращается ошибка 400 с соответствующим сообщением.
     """
     hashed_chat_id: bytes = auth.hash_password(password=user.chat_id)
-    user.chat_id = hashed_chat_id.decode()
+    user.chat_id = hashed_chat_id
     user_model = User(**user.model_dump())
     session.add(user_model)
     try:

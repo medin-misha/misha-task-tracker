@@ -9,7 +9,7 @@ from core.models import models, Base
 router = APIRouter(prefix="/crud", tags=["crud"])
 
 
-@router.get("/{model:str}/{id:int}")
+@router.get("/{model_name:str}/{id:int}")
 async def get_model_by_id_view(
     model_name: str, id: int, session: AsyncSession = Depends(db_helper.session)
 ):
@@ -124,7 +124,7 @@ async def create_model_view(
     return await create(session=session, model=models.get(model_name), data=data)
 
 
-@router.patch("/{model:str}/{id:int}")
+@router.patch("/{model_name:str}/{id:int}")
 async def patch_model_view(
     model_name: str,
     id: int,
@@ -181,7 +181,7 @@ async def patch_model_view(
     )
 
 
-@router.delete("/{model:str}/{id:int}", status_code=204)
+@router.delete("/{model_name:str}/{id:int}", status_code=204)
 async def delete_model_view(
     model_name: str, id: int, session: AsyncSession = Depends(db_helper.session)
 ):
