@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from datetime import date
 from typing import Callable
-from classes import ElementDecoder
+from .classes import ElementDecoder
 
 
 def infinite_is_execution_time(

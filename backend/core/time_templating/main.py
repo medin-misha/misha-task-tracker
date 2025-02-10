@@ -1,5 +1,5 @@
 from datetime import date
-from utils import is_execution_time
+from .utils import is_execution_time
 
 
 def check_schedule(date_day: date, code: str) -> bool:

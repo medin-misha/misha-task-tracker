@@ -3,8 +3,8 @@ import random
 from datetime import datetime, timedelta
 from datetime import date
 
-from main import check_schedule
-from utils import get_weekdays_dates
+from .main import check_schedule
+from .utils import get_weekdays_dates
 
 
 def test_every_day():
