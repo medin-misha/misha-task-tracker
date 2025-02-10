@@ -26,7 +26,6 @@ class ReturnReplay(BaseModel):
     time: Time
     counter: int
     replay_mode: str
-    how_many: int | None = None
     date: Date
 
 

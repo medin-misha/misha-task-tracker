@@ -1,12 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, Result
-from typing import List
+from datetime import datetime
+from typing import List, Dict
 from core import auth, db_helper, settings
 from core.crud import create, delete, get_by_id
 from core.models import Replay, Task, User
 from .schemes import ReplayScheme, TaskScheme, ReturnTask, TaskCreateScheme
-
+from .utils import is_complete
 
 router = APIRouter(prefix="/tasks", tags=["tasks"])
 
@@ -132,7 +133,10 @@ async def task_complete_view(
     task: Task = await get_by_id(session=session, model=Task, id=id)
 
     if not task is None and task.user_id == user.id:
-        task.is_complete = True
+        if task.replay.replay_mode == "":
+            task.is_complete = True
+        else:
+            task.replay.counter += 1
         await session.commit()
         return
     raise HTTPException(
@@ -225,3 +229,35 @@ async def get_my_not_completed_tasks_view(
     stmt = select(Task).where(Task.user_id == user.id, Task.is_complete == False)
     tasks: Result = await session.execute(stmt)
     return tasks.scalars().all()
+
+
+@router.get("/is/complete/{id:int}")
+async def is_complete_view(
+    id: int,
+    date=datetime.now().date(),
+    user: User = Depends(auth.login),
+    session: AsyncSession = Depends(db_helper.session),
+) -> bool:
+    """
+    Проверка необходимости выполнения задачи на выбранную дату.
+
+    Этот метод определяет, должна ли быть выполнена задача с указанным идентификатором на текущую дату.
+
+    Параметры:
+    - `id` (int): Идентификатор задачи.
+    - `date` (date, optional): Дата для проверки (по умолчанию — текущая).
+    - `user` (User): Объект пользователя, передаваемый через Depends(auth.login).
+    - `session` (AsyncSession): Асинхронная сессия для работы с базой данных (передаётся через Depends).
+
+    Пример использования:
+        GET /is/complete/1
+
+    Возвращает:
+    - `bool`: `True`, если задачу нужно выполнить на указанную дату, иначе `False`.
+    - Код состояния 200 при успешном выполнении запроса.
+    """
+
+    task: Task = await session.get(Task, id)
+    replay: Replay = task.replay
+
+    return is_complete(replay=replay, date_day=datetime.now().date())
