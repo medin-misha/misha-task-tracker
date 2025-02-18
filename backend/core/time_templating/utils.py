@@ -20,7 +20,6 @@ def infinite_is_execution_time(
 
         decode_result.append(method(arg=arg, date_day=date_day))
 
-    print(f"decode_result: {decode_result}")
     return all(decode_result)
 
 
