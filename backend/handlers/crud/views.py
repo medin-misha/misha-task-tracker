@@ -86,7 +86,7 @@ async def get_model_list_view(
 @router.post("/{model_name:str}")
 async def create_model_view(
     model_name: str,
-    data: Union[CreateUser, CreateTask, CreateReplay],
+    data: Union[CreateTask, CreateReplay],
     session: AsyncSession = Depends(db_helper.session),
 ):
     """
@@ -95,7 +95,7 @@ async def create_model_view(
     Этот метод позволяет создать новый объект определённой модели с использованием предоставленных данных.
 
     Параметры:
-    - `model_name` (str): Имя модели, для которой необходимо создать объект (например, "user", "task", "replay").
+    - `model_name` (str): Имя модели, для которой необходимо создать объект (например, "task", "replay").
     - `data` (Union[CreateUser, CreateTask, CreateReplay]): Данные для создания объекта модели.
       Ожидается экземпляр одной из предварительно определённых схем (например, `CreateUser`, `CreateTask`, `CreateReplay`).
     - `session` (AsyncSession): Сессия для работы с базой данных (передаётся через Depends).
@@ -114,13 +114,16 @@ async def create_model_view(
 
     Возвращает:
     - Объект модели, созданный на основе переданных данных.
+
+    !!! модель user создаёться в /auth/registration!!!
     """
 
     if not model_name in models.keys():
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=settings.errors.defunct_model
         )
-
+    if model_name == "user":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="user создаёться в auth/registration")
     return await create(session=session, model=models.get(model_name), data=data)
 
 
