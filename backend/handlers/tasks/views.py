@@ -7,7 +7,7 @@ from core import auth, db_helper, settings
 from core.crud import create, delete, get_by_id
 from core.models import Replay, Task, User
 from .schemes import ReplayScheme, TaskScheme, ReturnTask, TaskCreateScheme
-from .utils import is_complete
+from .utils import is_complete, get_n_days_grafic
 
 router = APIRouter(prefix="/tasks", tags=["tasks"])
 
@@ -260,4 +260,13 @@ async def is_complete_view(
     task: Task = await session.get(Task, id)
     replay: Replay = task.replay
 
-    return is_complete(replay=replay, date_day=datetime.now().date())
+    return is_complete(replay=replay, date_day=date)
+
+
+@router.get("/get/{days_count:int}/calendar")
+async def get_n_days_grafic_view(
+    days_count: int,
+    session: AsyncSession = Depends(db_helper.session),
+    user: User = Depends(auth.login),
+):
+    return await get_n_days_grafic(days_count=days_count, session=session, user=user)
