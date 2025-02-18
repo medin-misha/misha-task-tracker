@@ -7,14 +7,14 @@ from typing import Annotated
 import secrets
 from core import auth, db_helper, settings, auth
 from core.models import User
-from .schemes import RegistrationUser
+from .schemes import RegistrationUser, UserReturn
 
 security = HTTPBasic()
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-@router.get("/login", status_code=204)
-async def login_view(login: None = Depends(auth.login)) -> None:
+@router.get("/login", status_code=200)
+async def login_view(login: User = Depends(auth.login)):
     """
     Обработчик для входа пользователя в систему.
 
@@ -22,9 +22,9 @@ async def login_view(login: None = Depends(auth.login)) -> None:
     Самостоятельно она не содержит никакой логики, а используется исключительно
     как представление (view) для маршрута.
 
-    Возвращает статус 204 при успешной авторизации пользователя.
+    Возвращает статус 200 и User-а при успешной авторизации пользователя.
     """
-    pass
+    return UserReturn(id=login.id, user_name=login.user_name)
 
 
 @router.post("/registration", status_code=201)
@@ -56,3 +56,4 @@ async def registration_view(
             detail=settings.errors.registration_error,
         )
     return
+
