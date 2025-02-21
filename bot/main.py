@@ -3,7 +3,7 @@ from aiogram import Bot, Dispatcher
 import asyncio
 import logging
 
-from .config import config
+from settings import config
 
 
 async def main() -> None:
@@ -11,7 +11,7 @@ async def main() -> None:
     bot = Bot(token=config.token)
     dp = Dispatcher()
 
-    dp.start_polling(bot)
+    await dp.start_polling(bot)
 
 
 if __name__ == "__main__":
