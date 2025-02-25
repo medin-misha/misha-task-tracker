@@ -46,7 +46,7 @@ async def login(
             return user
     except AttributeError:
         raise HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED, detail=settings.errors.auth_error
+            status_code=status.HTTP_401_UNAUTHORIZED, detail=settings.errors.auth_error
         )
 
 

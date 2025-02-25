@@ -7,12 +7,12 @@ class TaskScheme(BaseModel):
     name: str = ""
     description: str = ""
     is_complete: bool = False
-    
 
 
 class TaskCreateScheme(TaskScheme):
     replay_id: PositiveInt = 10**10
     user_id: PositiveInt
+
 
 class ReplayScheme(BaseModel):
     counter: int | None = 0

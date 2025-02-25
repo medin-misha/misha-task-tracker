@@ -14,5 +14,6 @@ class Task(Base):
     replay: Mapped["Replay"] = relationship(back_populates="task", lazy="selectin")
 
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
-    user: Mapped["User"] = relationship(back_populates="tasks", )
-    
+    user: Mapped["User"] = relationship(
+        back_populates="tasks",
+    )

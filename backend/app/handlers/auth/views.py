@@ -56,4 +56,3 @@ async def registration_view(
             detail=settings.errors.registration_error,
         )
     return
-

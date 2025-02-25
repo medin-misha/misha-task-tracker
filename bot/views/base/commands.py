@@ -34,9 +34,8 @@ async def help_view(msg: Message):
     await msg.answer(
         text="<code>/start</code> - начальная команда, она же используеться для аутентификации\n"
         + f"<code>/help</code> - команда на которую тыкнул <i>{msg.from_user.username}</i>, она отвечает за вывод всех понятных боту команд\n"
-        
-        + f"<i>{msg.from_user.username}</i>, пока всё.", # last str
-        parse_mode=ParseMode.HTML
+        + f"<i>{msg.from_user.username}</i>, пока всё.",  # last str
+        parse_mode=ParseMode.HTML,
     )
 
 

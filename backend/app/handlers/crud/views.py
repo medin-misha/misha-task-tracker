@@ -123,7 +123,10 @@ async def create_model_view(
             status_code=status.HTTP_404_NOT_FOUND, detail=settings.errors.defunct_model
         )
     if model_name == "user":
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="user создаёться в auth/registration")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="user создаёться в auth/registration",
+        )
     return await create(session=session, model=models.get(model_name), data=data)
 
 

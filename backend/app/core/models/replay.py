@@ -12,4 +12,3 @@ class Replay(Base):
     )
     replay_mode: Mapped[str] = mapped_column(nullable=True)
     task: Mapped["Task"] = relationship(back_populates="replay")
-    

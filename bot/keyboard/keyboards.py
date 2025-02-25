@@ -11,5 +11,7 @@ def menu_reply_keyboards() -> types.ReplyKeyboardMarkup:
         types.KeyboardButton(text=btn_text)
         for btn_text in [ButtonsText.create_new_task, ButtonsText.my_today_tasks]
     ]
-    keyboard: types.ReplyKeyboardMarkup = types.ReplyKeyboardMarkup(keyboard=[buttons_line])
+    keyboard: types.ReplyKeyboardMarkup = types.ReplyKeyboardMarkup(
+        keyboard=[buttons_line]
+    )
     return keyboard
