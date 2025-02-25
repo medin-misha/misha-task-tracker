@@ -39,14 +39,15 @@ async def login(
     stmt = select(User).where(User.user_name == credentials.username)
     stmt_result: Result = await session.execute(stmt)
     user: User = stmt_result.scalar()
-
-    if validate_password(
-        password=credentials.password, hashed_password=user.chat_id
-    ):
-        return user
-    raise HTTPException(
+    try:
+        if validate_password(
+            password=credentials.password, hashed_password=user.chat_id
+        ):
+            return user
+    except AttributeError:
+        raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED, detail=settings.errors.auth_error
-    )
+        )
 
 
 def hash_password(password: str) -> bytes:
