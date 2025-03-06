@@ -3,9 +3,10 @@ from aiogram.types import Message, URLInputFile
 from aiogram.filters import Command, CommandStart
 from aiogram.enums.chat_action import ChatAction
 from aiogram.enums import ParseMode
+from aiogram.fsm.context import FSMContext
 from settings import config
 from utils import registration, login
-from keyboard import menu_reply_keyboards
+from keyboard import menu_reply_keyboards, ButtonsText
 
 router = Router()
 
@@ -22,7 +23,7 @@ async def start_view(msg: Message):
     await msg.bot.send_sticker(chat_id=msg.chat.id, sticker=config.msg.start_stiker)
     await msg.reply(
         text=f"{msg.from_user.first_name}, ты наконец то решил встать с дивана и начать действовать.\n\n"
-        "минимальный пользовательский арсенал:\n- /create создать задачу",
+        "минимальный пользовательский арсенал:\n- /create создать задачу\n- /tasks - список задач на сегодня\n- /delete - удалить задачу по id",
         parse_mode=ParseMode.HTML,
         reply_markup=menu_reply_keyboards(),
     )
@@ -35,7 +36,10 @@ async def help_view(msg: Message):
     await msg.answer(
         text="<code>/start</code> - начальная команда, она же используеться для аутентификации\n"
         + f"<code>/help</code> - команда на которую тыкнул <i>{msg.from_user.username}</i>, она отвечает за вывод всех понятных боту команд\n"
-        f"<code>/helpReply</code> - команда которая расскажет тебе как более точно настраивать повтор сообщения"
+        + "<code>/helpReply</code> - команда которая расскажет тебе как более точно настраивать повтор сообщения"
+        + "<code>/create</code> - создать задачу"
+        + "<code>/delete</code> - удалить задачу по id"
+        + "<code>/tasks</code> - список задач на день"        
         + f"<i>{msg.from_user.username}</i>, пока всё.",  # last str
         parse_mode=ParseMode.HTML,
     )
@@ -87,3 +91,14 @@ async def get_stiker(msg: Message):
     await msg.bot.copy_message(
         chat_id=msg.chat.id, from_chat_id=msg.chat.id, message_id=msg.message_id
     )
+
+@router.message(F.text == ButtonsText.state_clear)
+async def clear_state_view(msg: Message, state: FSMContext):
+    await msg.bot.send_chat_action(chat_id=msg.chat.id, action=ChatAction.TYPING)
+    await state.clear()
+    await msg.answer(text="так, всё отменил")
+
+@router.message(Command("myId"))
+async def get_user_id_view(msg: Message):
+    await msg.bot.send_chat_action(chat_id=msg.chat.id, action=ChatAction.TYPING)
+    await msg.answer(text=f"<code>{msg.chat.id}</code>")
