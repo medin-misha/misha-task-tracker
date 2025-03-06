@@ -87,14 +87,14 @@ async def delete_task_view(
       возвращается ошибка 404 с соответствующим сообщением.
     - Если пользователь не авторизован, будет возвращена ошибка аутентификации (401).
     """
-
     task: Task = await get_by_id(session=session, model=Task, id=id)
-    if not task is None and task.user_id == user.id:
-
-        task_deleted: bool = delete(session=session, model=Task, id=id)
-        replay_deleted: bool = delete(session=session, model=Task, id=task.replay_id)
-        if task_deleted and replay_deleted:
-            return
+    reply: Reply = await get_by_id(session=session, model=Replay, id=task.replay_id)
+    if not task is None and not reply is None and task.user_id == user.id:
+        task_deleted: bool = await delete(session=session, model=Task, id=id)
+        replay_deleted: bool = await delete(
+            session=session, model=Replay, id=task.replay_id
+        )
+        return
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=settings.errors.not_fount_by_id.format(model="task", id=id),
