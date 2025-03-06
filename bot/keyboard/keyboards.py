@@ -5,7 +5,7 @@ from typing import List, Dict
 
 
 class ButtonsText:
-    my_today_tasks: str = "мои задачи на сегодня"
+    my_today_tasks: str = "/tasks"
     create_new_task: str = "/create"
     edit_task: Dict[str, str] = {
         "изменить имя": "name",
@@ -20,6 +20,7 @@ class ButtonsText:
         "каждую неделю": "e_w",
         "каждый месяц": "e_m",
     }
+    state_clear: str = "ОТМЕНИТЬ"
 
 
 def menu_reply_keyboards() -> types.ReplyKeyboardMarkup:
@@ -59,4 +60,9 @@ def send_reply_mode_reply_keyboards() -> types.ReplyKeyboardMarkup:
     for text in ButtonsText.reply_mode.keys():
         builder.button(text=text)
 
+    return builder.as_markup(resize_keyboard=True)
+
+def state_clear_reply_keyboard() -> types.ReplyKeyboardMarkup:
+    builder = ReplyKeyboardBuilder()
+    builder.button(text=ButtonsText.state_clear)
     return builder.as_markup(resize_keyboard=True)
