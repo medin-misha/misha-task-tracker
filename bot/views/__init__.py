@@ -7,4 +7,4 @@ from .crud import crud_router
 
 main_router = Router(name="main_router")
 
-main_router.include_routers(base_router, view_router, crud_router)
+main_router.include_routers(base_router, crud_router, view_router)
