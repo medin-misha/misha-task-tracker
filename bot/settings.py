@@ -15,6 +15,10 @@ class ConfigMessages(BaseSettings):
     star_eye_stiker: str = (
         "CAACAgIAAxkBAAMyZ72WppzmKXPGej9m9eYr0odwoOwAApMyAAIla8hKHRe9qJyjfek2BA"
     )
+    tasks_list_header: str = "Вот твои задачи на {date}:\n\n"
+    tasks_list_element: str = (
+        "Имя задачи: <b>{name}</b>\nОписание задачи: <i>{description}</i>\nId задачи: {id}\n--------------------\n"
+    )
 
 
 class ConfigMain(BaseSettings):
