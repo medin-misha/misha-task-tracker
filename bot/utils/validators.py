@@ -7,3 +7,4 @@ def validate_date(text: str) -> bool:
         return True
     except ValueError:
         return False
+
