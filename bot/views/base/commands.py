@@ -40,6 +40,8 @@ async def help_view(msg: Message):
         + "<code>/create</code> - создать задачу"
         + "<code>/delete</code> - удалить задачу по id"
         + "<code>/tasks</code> - список задач на день"
+        + "<code>/complete</code> - пометить задачу как выполненную"
+        + "<code>/tasksGet</code> - посмотреть задачи на n дней вперёд"
         + f"<i>{msg.from_user.username}</i>, пока всё.",  # last str
         parse_mode=ParseMode.HTML,
     )
