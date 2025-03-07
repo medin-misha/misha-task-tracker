@@ -5,7 +5,7 @@ import base64
 from settings import config
 
 
-def base_encode(user_name: str, user_id: int) -> str:
+def base_encode(user_name: str, user_id: str) -> str:
     string: str = f"{user_name}:{user_id}"
     str_bytes: bytes = string.encode("ascii")
     str_base64: str = base64.b64encode(str_bytes).decode("ascii")

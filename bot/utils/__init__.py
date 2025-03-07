@@ -5,8 +5,9 @@ __all__ = (
     "validate_date",
     "tasks",
     "delete_task",
+    "complete_task",
 )
 
 from .auth import registration, login, base_encode
-from .crud import create_task, tasks, delete_task
+from .crud import create_task, tasks, delete_task, complete_task
 from .validators import validate_date

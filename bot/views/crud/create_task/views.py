@@ -95,5 +95,5 @@ async def get_error_view(msg: Message):
     await msg.bot.send_sticker(chat_id=msg.chat.id, sticker=config.msg.what_stiker)
     await msg.reply(
         text="Слушай, когда ты мне отправляешь <i>подобную штуку</i> у меня в место текста высвечиваеться <code>None</code>. Я не вдупляю стикеры, смайлы, картинки и так далее. <b>Скинь текстом.</b>",
-        reply_markup=state_clear_reply_keyboard()
+        reply_markup=state_clear_reply_keyboard(),
     )

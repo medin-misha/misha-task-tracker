@@ -41,11 +41,21 @@ async def tasks(user_name: str, user_id: int, how_many_days: int = 1):
             return await response.json()
 
 
-async def delete_task(id: str, user_name: str, user_id: int) -> bool:
+async def delete_task(id: str, user_name: str, user_id: str) -> bool:
     async with aiohttp.ClientSession() as session:
         auth_base64 = base_encode(user_name=user_name, user_id=user_id)
         headers: Dict[str, str] = {"Authorization": f"Basic {auth_base64}"}
         async with session.delete(
             url=config.api_address + f"tasks/{id}", headers=headers
+        ) as response:
+            return False if response.status != 204 else True
+
+
+async def complete_task(id: str, user_name: str, user_id: str) -> bool:
+    async with aiohttp.ClientSession() as session:
+        auth_base64 = base_encode(user_name=user_name, user_id=user_id)
+        headers: Dict[str, str] = {"Authorization": f"Basic {auth_base64}"}
+        async with session.get(
+            config.api_address + f"tasks/complete/{id}", headers=headers
         ) as response:
             return False if response.status != 204 else True

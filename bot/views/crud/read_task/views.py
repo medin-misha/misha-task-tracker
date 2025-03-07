@@ -18,7 +18,7 @@ async def days_tasks_view(msg: Message):
         user_name=msg.from_user.username, user_id=msg.chat.id, how_many_days=1
     )
     days_tasks: dict = tasks_data[0]
-    
+
     for task in days_tasks.get("tasks"):
         msg_text += task_template.format(
             name=task.get("name"),
@@ -27,5 +27,3 @@ async def days_tasks_view(msg: Message):
         )
     date = days_tasks.get("date")
     await msg.reply(text=f"{msg_text.format(date=date)}")
-
-
