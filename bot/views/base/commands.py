@@ -39,7 +39,7 @@ async def help_view(msg: Message):
         + "<code>/helpReply</code> - команда которая расскажет тебе как более точно настраивать повтор сообщения"
         + "<code>/create</code> - создать задачу"
         + "<code>/delete</code> - удалить задачу по id"
-        + "<code>/tasks</code> - список задач на день"        
+        + "<code>/tasks</code> - список задач на день"
         + f"<i>{msg.from_user.username}</i>, пока всё.",  # last str
         parse_mode=ParseMode.HTML,
     )
@@ -92,11 +92,13 @@ async def get_stiker(msg: Message):
         chat_id=msg.chat.id, from_chat_id=msg.chat.id, message_id=msg.message_id
     )
 
+
 @router.message(F.text == ButtonsText.state_clear)
 async def clear_state_view(msg: Message, state: FSMContext):
     await msg.bot.send_chat_action(chat_id=msg.chat.id, action=ChatAction.TYPING)
     await state.clear()
     await msg.answer(text="так, всё отменил")
+
 
 @router.message(Command("myId"))
 async def get_user_id_view(msg: Message):

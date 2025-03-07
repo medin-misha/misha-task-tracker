@@ -62,6 +62,7 @@ def send_reply_mode_reply_keyboards() -> types.ReplyKeyboardMarkup:
 
     return builder.as_markup(resize_keyboard=True)
 
+
 def state_clear_reply_keyboard() -> types.ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
     builder.button(text=ButtonsText.state_clear)
