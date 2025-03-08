@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
-from sqlalchemy.orm import selectinload
+from sqlalchemy import select, Result
+from sqlalchemy.orm import selectinload, lazyload
 from datetime import datetime, timedelta
 from typing import List, Dict
 from core.models import Replay, User, Task
@@ -24,15 +24,15 @@ async def get_n_days_grafic(
     ]
     stmt = (
         select(Task)
-        .where(Task.user_id == User.id, Task.is_complete == False)
-        .options(selectinload("*"))
+        .where(Task.user_id == user.id, Task.is_complete == False)
+        .options(selectinload(Task.replay))
     )
 
     tasks = await session.execute(stmt)
     tasks = tasks.scalars().all()
     n_day_calendar: list[dict] = []
     for day in days:
-        day_tasks: Dict[str, datetime.date, list] = {
+        day_tasks: Dict[str, datetime.date | list] = {
             "date": day.strftime("%Y-%m-%d"),
             "tasks": [],
         }
@@ -41,3 +41,9 @@ async def get_n_days_grafic(
                 day_tasks["tasks"].append(task)
         n_day_calendar.append(day_tasks)
     return n_day_calendar
+
+async def user_notification(session: AsyncSession):
+    all_users_stmt = select(User).options().where(User.tasks.any())
+    all_users = await session.execute(all_users_stmt)
+    users: list = all_users.scalars().all()
+    # todo доделай уведомительную функцию

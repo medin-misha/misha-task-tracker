@@ -7,7 +7,7 @@ from core import auth, db_helper, settings
 from core.crud import create, delete, get_by_id
 from core.models import Replay, Task, User
 from .schemes import ReplayScheme, TaskScheme, ReturnTask, TaskCreateScheme
-from .utils import is_complete, get_n_days_grafic
+from .utils import is_complete, get_n_days_grafic, user_notification
 
 router = APIRouter(prefix="/tasks", tags=["tasks"])
 
@@ -270,3 +270,8 @@ async def get_n_days_grafic_view(
     user: User = Depends(auth.login),
 ):
     return await get_n_days_grafic(days_count=days_count, session=session, user=user)
+
+
+@router.get("/users/notifications/")
+async def user_notification_view(session: AsyncSession = Depends(db_helper.session)):
+    return await user_notification(session=session)
