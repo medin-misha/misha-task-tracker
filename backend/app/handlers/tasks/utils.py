@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, Result
-from sqlalchemy.orm import selectinload, lazyload
+from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 from datetime import datetime, timedelta
 from typing import List, Dict
 from core.models import Replay, User, Task
@@ -18,7 +18,7 @@ def is_complete(replay: Replay, date_day: datetime.date) -> bool:
 # эта функция очень зависит от is_complete!!!
 async def get_n_days_grafic(
     days_count: int, session: AsyncSession, user: User
-) -> List[dict]:
+) -> List[Dict]:
     days: list[datetime.date] = [
         datetime.now() + timedelta(days=i) for i in range(days_count)
     ]
@@ -30,7 +30,7 @@ async def get_n_days_grafic(
 
     tasks = await session.execute(stmt)
     tasks = tasks.scalars().all()
-    n_day_calendar: list[dict] = []
+    n_day_calendar: list[Dict] = []
     for day in days:
         day_tasks: Dict[str, datetime.date | list] = {
             "date": day.strftime("%Y-%m-%d"),
@@ -42,8 +42,10 @@ async def get_n_days_grafic(
         n_day_calendar.append(day_tasks)
     return n_day_calendar
 
+
 async def user_notification(session: AsyncSession):
     all_users_stmt = select(User).options().where(User.tasks.any())
     all_users = await session.execute(all_users_stmt)
     users: list = all_users.scalars().all()
     # todo доделай уведомительную функцию
+    return users

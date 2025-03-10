@@ -1,7 +1,11 @@
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import ForeignKey, Date, Time, func
-from datetime import datetime, date, time
+from sqlalchemy import Date, Time, func
+from typing import TYPE_CHECKING
+from datetime import datetime
 from .base import Base
+
+if TYPE_CHECKING:
+    from core.models import Task
 
 
 class Replay(Base):

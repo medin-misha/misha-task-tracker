@@ -2,7 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import create_model
 from typing import Union
-from .schemas import CreateReplay, CreateTask, CreateUser
+import typing
+from .schemas import CreateReplay, CreateTask
 from core import create, get_by_id, get_list, update, delete, db_helper, settings
 from core.models import models, Base
 
@@ -37,7 +38,7 @@ async def get_model_by_id_view(
     - Экземпляр модели, если он найден.
     """
 
-    if not model_name in models.keys():
+    if model_name not in models.keys():
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=settings.errors.defunct_model
         )
@@ -76,7 +77,7 @@ async def get_model_list_view(
     - Список объектов указанной модели.
     """
 
-    if not model_name in models.keys():
+    if model_name not in models.keys():
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=settings.errors.defunct_model
         )
@@ -118,7 +119,7 @@ async def create_model_view(
     !!! модель user создаёться в /auth/registration!!!
     """
 
-    if not model_name in models.keys():
+    if model_name not in models.keys():
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=settings.errors.defunct_model
         )
@@ -169,7 +170,7 @@ async def patch_model_view(
     - Для создания валидационной модели (Pydantic) для входных данных используется динамическое создание класса `UpdateModel`.
     """
 
-    if not model_name in models.keys():
+    if model_name not in models.keys():
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=settings.errors.defunct_model
         )
@@ -214,7 +215,7 @@ async def delete_model_view(
     - Статус 204 (No Content), если объект успешно удалён.
     """
 
-    if not model_name in models.keys():
+    if model_name not in models.keys():
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=settings.errors.defunct_model
         )

@@ -1,10 +1,9 @@
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, Result
 import bcrypt
 from typing import Annotated
-import secrets
 from core.models import User
 from core import db_helper, settings
 

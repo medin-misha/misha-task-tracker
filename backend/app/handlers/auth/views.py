@@ -1,11 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi.security import HTTPBasic
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy import select
-from typing import Annotated
-import secrets
-from core import auth, db_helper, settings, auth
+from core import auth, db_helper, settings
 from core.models import User
 from .schemes import RegistrationUser, UserReturn
 

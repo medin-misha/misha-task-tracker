@@ -10,7 +10,6 @@ def infinite_is_execution_time(
     decode_result: list[bool] = []
 
     for index, element in enumerate(elements):
-
         if len(element) > 1:
             continue
         method: Callable | None = getattr(decoder, element)

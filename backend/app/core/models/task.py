@@ -1,6 +1,10 @@
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import ForeignKey
+from typing import TYPE_CHECKING
 from .base import Base
+
+if TYPE_CHECKING:
+    from core.models import User, Replay
 
 
 class Task(Base):

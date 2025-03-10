@@ -1,5 +1,4 @@
 from pydantic import BaseModel, PositiveInt
-from typing import Any
 from core.models import schemas
 
 

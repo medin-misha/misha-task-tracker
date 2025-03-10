@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, Result
 from datetime import datetime
-from typing import List, Dict
+from typing import List
 from core import auth, db_helper, settings
 from core.crud import create, delete, get_by_id
 from core.models import Replay, Task, User
@@ -88,12 +88,10 @@ async def delete_task_view(
     - Если пользователь не авторизован, будет возвращена ошибка аутентификации (401).
     """
     task: Task = await get_by_id(session=session, model=Task, id=id)
-    reply: Reply = await get_by_id(session=session, model=Replay, id=task.replay_id)
-    if not task is None and not reply is None and task.user_id == user.id:
-        task_deleted: bool = await delete(session=session, model=Task, id=id)
-        replay_deleted: bool = await delete(
-            session=session, model=Replay, id=task.replay_id
-        )
+    replay: Replay = await get_by_id(session=session, model=Replay, id=task.replay_id)
+    if task is not None and replay is not None and task.user_id == user.id:
+        await delete(session=session, model=Task, id=id)
+        await delete(session=session, model=Replay, id=task.replay_id)
         return
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
@@ -132,7 +130,7 @@ async def task_complete_view(
 
     task: Task = await get_by_id(session=session, model=Task, id=id)
 
-    if not task is None and task.user_id == user.id:
+    if task is not None and task.user_id == user.id:
         if task.replay.replay_mode == "":
             task.is_complete = True
         else:

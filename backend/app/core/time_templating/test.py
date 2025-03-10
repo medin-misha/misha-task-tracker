@@ -1,8 +1,5 @@
-import pytest
 import random
-from datetime import datetime, timedelta
 from datetime import date
-
 from .main import check_schedule
 from .utils import get_weekdays_dates
 

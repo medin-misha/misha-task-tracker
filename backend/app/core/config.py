@@ -7,9 +7,7 @@ BASE_DIR = Path(__file__).parent.parent
 
 
 class DBSettings(BaseModel):
-    url: str = (
-        f"postgresql+asyncpg://{os.getenv('postgres_user')}:{os.getenv('postgres_password')}@{os.getenv('postgres_host')}"
-    )
+    url: str = f"postgresql+asyncpg://{os.getenv('postgres_user')}:{os.getenv('postgres_password')}@{os.getenv('postgres_host')}"
 
 
 class SecuredSettings(BaseSettings):
