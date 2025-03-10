@@ -1,8 +1,8 @@
 from aiogram import types
-from aiogram.utils.keyboard import ReplyKeyboardBuilder
+from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
 from datetime import datetime
 from typing import List, Dict
-
+from settings import config
 
 class ButtonsText:
     my_today_tasks: str = "/tasks"
@@ -67,3 +67,10 @@ def state_clear_reply_keyboard() -> types.ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
     builder.button(text=ButtonsText.state_clear)
     return builder.as_markup(resize_keyboard=True)
+
+
+def task_complete_inline_keyboard(ids: List[int]) -> types.InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    for id in ids:
+        builder.button(text=f"{id} - выполнил", callback_data=config.inline_callbacks.task_complete + str(id))
+    return builder.as_markup()

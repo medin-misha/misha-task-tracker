@@ -21,7 +21,7 @@ class ConfigMessages(BaseSettings):
     )
 
 class InlineButtonCallbacks(BaseSettings):
-    task_complete: str = "complete"
+    task_complete: str = "complete "
 
 class ConfigMain(BaseSettings):
     token: str = os.getenv("token")

@@ -4,7 +4,7 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.enums import ChatAction
 from typing import List
-from keyboard import state_clear_reply_keyboard
+from keyboard import state_clear_reply_keyboard, task_complete_inline_keyboard
 from .states import GetNDaystasks
 from .utils import get_day_tasks, get_n_days_tasks
 
@@ -14,8 +14,10 @@ router = Router(name="read_task")
 @router.message(Command("tasks"))
 async def days_tasks_view(msg: Message):
     await msg.bot.send_chat_action(chat_id=msg.chat.id, action=ChatAction.TYPING)
-    text: str = await get_day_tasks(msg=msg)
-    await msg.reply(text=text)
+    texts: str
+    ids: List[int]
+    texts, ids = await get_day_tasks(msg=msg)
+    await msg.reply(text=texts, reply_markup=task_complete_inline_keyboard(ids=ids))
 
 
 @router.message(Command("tasksGet"))
