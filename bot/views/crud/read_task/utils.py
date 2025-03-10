@@ -1,14 +1,12 @@
 from aiogram.fsm.context import FSMContext
-from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.types import Message
-from typing import List, Dict, Any, Tuple
+from typing import List, Tuple
 import copy
 from settings import config
 from utils import tasks
 
 
 async def get_day_tasks(msg: Message) -> Tuple[str, List[int]]:
-
     msg_text: str = copy.copy(config.msg.tasks_list_header)
     task_template: str = copy.copy(config.msg.tasks_list_element)
 
@@ -23,7 +21,7 @@ async def get_day_tasks(msg: Message) -> Tuple[str, List[int]]:
             description=task.get("description"),
             id=task.get("id"),
         )
-        ids.append(task.get('id'))
+        ids.append(task.get("id"))
     date = days_tasks.get("date")
 
     return f"{msg_text.format(date=date)}", ids

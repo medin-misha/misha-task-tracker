@@ -7,10 +7,10 @@ from datetime import datetime
 from .states import CreateTask
 from keyboard import (
     ButtonsText,
-    edit_task_data_reply_keyboards,
     menu_reply_keyboards,
     send_data_reply_keyboards,
     send_reply_mode_reply_keyboards,
+    state_clear_reply_keyboard,
 )
 from settings import config
 from utils import create_task, validate_date
@@ -38,7 +38,7 @@ async def get_task_description_view(msg: Message, state: FSMContext):
     await msg.bot.send_chat_action(chat_id=msg.chat.id, action=ChatAction.TYPING)
     await state.update_data(description=msg.text)
     await msg.answer(
-        text=f"На какое число поставить твою задачу? (число должно быть в формате: {datetime.now().strftime("%Y-%m-%d")})",
+        text=f"На какое число поставить твою задачу? (число должно быть в формате: {datetime.now().strftime('%Y-%m-%d')})",
         reply_markup=send_data_reply_keyboards(),
     )
     await state.set_state(CreateTask.date)
@@ -56,7 +56,7 @@ async def get_task_date_view(msg: Message, state: FSMContext):
         await state.set_state(CreateTask.replay_mode)
     else:
         await msg.reply(
-            text=f"<b>{msg.text}</b> - это не корректный формат времени. Чесно говоря я вооще хз чё ты мне скинул.\n\nбудь так добр скидывай дату в фомрате <b>{datetime.now().strftime("%Y-%m-%d")}</b>. Просто попробуй скинуть ещё раз.",
+            text=f"<b>{msg.text}</b> - это не корректный формат времени. Чесно говоря я вооще хз чё ты мне скинул.\n\nбудь так добр скидывай дату в фомрате <b>{datetime.now().strftime('%Y-%m-%d')}</b>. Просто попробуй скинуть ещё раз.",
             reply_markup=send_data_reply_keyboards(),
         )
         await state.set_state(CreateTask.date)

@@ -6,11 +6,14 @@ from settings import config
 
 router = Router(name="read_tasks_callbacks")
 
-@router.callback_query(F.data.regexp(f'^{config.inline_callbacks.task_complete}(\d+)$'))
+
+@router.callback_query(F.data.regexp(f"^{config.inline_callbacks.task_complete}(\d+)$"))
 async def complete_task_callback(query: CallbackQuery):
     if query.data is not None:
         id: int = query.data.split()[1]
-        completed: bool = await complete_task(id=id, user_name=query.from_user.username, user_id=query.from_user.id)
+        completed: bool = await complete_task(
+            id=id, user_name=query.from_user.username, user_id=query.from_user.id
+        )
         if completed:
             await query.answer(text=f"задание {id} выполнено")
         else:

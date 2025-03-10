@@ -1,5 +1,5 @@
 from aiogram import Router, F
-from aiogram.types import Message, URLInputFile
+from aiogram.types import Message
 from aiogram.filters import Command, CommandStart
 from aiogram.enums.chat_action import ChatAction
 from aiogram.enums import ParseMode
@@ -16,9 +16,7 @@ async def start_view(msg: Message):
     await msg.bot.send_chat_action(chat_id=msg.chat.id, action=ChatAction.TYPING)
     log_code: int = await login(user_name=msg.from_user.username, user_id=msg.chat.id)
     if log_code == 401:
-        reg_code: int = await registration(
-            user_name=msg.from_user.username, user_id=msg.from_user.id
-        )
+        await registration(user_name=msg.from_user.username, user_id=msg.from_user.id)
 
     await msg.bot.send_sticker(chat_id=msg.chat.id, sticker=config.msg.start_stiker)
     await msg.reply(
@@ -84,14 +82,6 @@ m_dec → Декабрь Все комбинации с днём неделиm
 
 &_
 & говорит системе что нужно принять второе условие. Допустим e_w_su_&_e_w_mo повторять каждый день недели который равен sunday или повторять каждый день недели который равен monday."""
-    )
-
-
-@router.message(F.sticker)
-async def get_stiker(msg: Message):
-    print(msg.sticker.file_id)
-    await msg.bot.copy_message(
-        chat_id=msg.chat.id, from_chat_id=msg.chat.id, message_id=msg.message_id
     )
 
 

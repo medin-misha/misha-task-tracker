@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import List, Dict
 from settings import config
 
+
 class ButtonsText:
     my_today_tasks: str = "/tasks"
     create_new_task: str = "/create"
@@ -51,7 +52,7 @@ def edit_task_data_reply_keyboards() -> types.ReplyKeyboardMarkup:
 
 def send_data_reply_keyboards() -> types.ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
-    builder.button(text=f"{datetime.now().strftime("%Y-%m-%d")}")
+    builder.button(text=f"{datetime.now().strftime('%Y-%m-%d')}")
     return builder.as_markup(resize_keyboard=True)
 
 
@@ -72,5 +73,8 @@ def state_clear_reply_keyboard() -> types.ReplyKeyboardMarkup:
 def task_complete_inline_keyboard(ids: List[int]) -> types.InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     for id in ids:
-        builder.button(text=f"{id} - выполнил", callback_data=config.inline_callbacks.task_complete + str(id))
+        builder.button(
+            text=f"{id} - выполнил",
+            callback_data=config.inline_callbacks.task_complete + str(id),
+        )
     return builder.as_markup()

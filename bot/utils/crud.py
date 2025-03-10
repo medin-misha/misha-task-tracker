@@ -3,7 +3,7 @@ from aiogram.fsm.context import FSMContext
 from datetime import datetime
 from typing import Dict
 from settings import config
-from .auth import base_encode
+from utils.encode import base_encode
 
 
 async def create_task(state: FSMContext, user_name: str, user_id: int) -> dict | None:
